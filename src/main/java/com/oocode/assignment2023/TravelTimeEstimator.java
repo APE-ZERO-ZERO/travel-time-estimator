@@ -20,13 +20,10 @@ public class TravelTimeEstimator {
 
         try {
             ResponseBody responseBody = executeRequest(request);
-            s = JsonParser.parseString(responseBody.string())
-                    .getAsJsonObject()
-                    .get("transit_time_minutes").getAsInt();
+            return evaluateResponse(responseBody);
         } catch (Exception e) {
             throw e;
         }
-        return s;
     }
 
     public static Request buildRequest(String[] args) {
@@ -55,6 +52,17 @@ public class TravelTimeEstimator {
         } catch (Exception e) {
             System.out.println("Request was not successful");
             throw new Exception("Error 101: Request was not successful.");
+        }
+    }
+
+    public static int evaluateResponse(ResponseBody responseBody) throws Exception {
+        try {
+            return JsonParser.parseString(responseBody.string())
+                    .getAsJsonObject()
+                    .get("transit_time_minutes").getAsInt();
+
+        } catch (Exception e){
+            throw new Exception("Response could not be evaluated.");
         }
     }
 }
