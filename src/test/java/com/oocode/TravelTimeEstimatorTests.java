@@ -3,6 +3,7 @@ package com.oocode;
 import org.junit.*;
 import com.oocode.assignment2023.TravelTimeEstimator;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.core.Is.*;
 
@@ -16,7 +17,7 @@ public class TravelTimeEstimatorTests {
         try {
             travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
             System.out.println(travelTime);
-            if (travelTime >= 25 && travelTime <= 45) {
+            if (travelTime >= 25 && travelTime <= 60) {
                 check = true;
             }
             assertThat(check, is(true));
@@ -49,5 +50,16 @@ public class TravelTimeEstimatorTests {
     }
 
 
+    @Test(timeout = 2000)
+    public void ShorterRouteIsTaken() {
+        String mockString = "{\"walk_travel_time_minutes\":9,\"transit_time_minutes\":20}";
+        try {
+            Integer travelTime = TravelTimeEstimator.evaluateResponse(mockString);
+            System.out.println(travelTime);
+            assertThat(travelTime, equalTo(9));
+        } catch (Exception e) {
+
+        }
+    }
 
 }

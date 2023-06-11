@@ -23,8 +23,8 @@ public class TravelTimeEstimator {
         Request request = buildRequest(args);
 
         try {
-            ResponseBody responseBody = executeRequest(request);
-            return evaluateResponse(responseBody);
+            String responseString = executeRequest(request);
+            return evaluateResponse(responseString);
         } catch (Exception e) {
             throw e;
         }
@@ -45,11 +45,11 @@ public class TravelTimeEstimator {
                 .build();
     }
 
-    public static ResponseBody executeRequest(Request request) throws Exception {
+    public static String executeRequest(Request request) throws Exception {
         try {
             Response r = new OkHttpClient().newCall(request).execute();
             if (r.isSuccessful()) {
-                return r.body();
+                return r.body().string();
             } else {
                 return null;
             }
@@ -59,9 +59,9 @@ public class TravelTimeEstimator {
         }
     }
 
-    public static int evaluateResponse(ResponseBody responseBody) throws Exception {
+    public static int evaluateResponse(String responseString) throws Exception {
         try {
-            return JsonParser.parseString(responseBody.string())
+            return JsonParser.parseString(responseString)
                     .getAsJsonObject()
                     .get("transit_time_minutes").getAsInt();
 
