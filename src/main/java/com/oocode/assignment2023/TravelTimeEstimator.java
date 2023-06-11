@@ -14,17 +14,9 @@ public class TravelTimeEstimator {
     // Name + signature of this method, "travelTimeInMinutes", must not change
     // i.e. no change to return type, modifier ("static"), exception, parameter
     public static int travelTimeInMinutes(String[] args) throws Exception {
-        String startLat = args[0], startLong = args[1],
-                endLat = args[2], endLong = args[3];
         String s = null;
-        String x = startLat + "," + startLong, y = endLat + "," + endLong;
-        Request request = new Request.Builder()
-                .url("https://api.external.citymapper.com" +
-                        "/api/1/traveltimes?" +
-                        "start=" + x + "&end=" + y)
-                .addHeader("Citymapper-Partner-Key",
-                        System.getenv("CITYMAPPER_KEY"))
-                .build();
+
+        Request request = buildRequest(args);
 
         try (Response r = new OkHttpClient().newCall(request).execute()) {
             if (r.isSuccessful()) {
@@ -36,5 +28,20 @@ public class TravelTimeEstimator {
             }
         }
         return Integer.parseInt(s);
+    }
+
+    public static Request buildRequest(String[] args) {
+        String startLat = args[0], startLong = args[1],
+                endLat = args[2], endLong = args[3];
+        String x = startLat + "," + startLong, y = endLat + "," + endLong;
+        System.out.println(x + "  "  + y);
+        //System.out.println("curl -H \"Citymapper-Partner-Key: dRywdoAozF2ptKzMxiHmG7PLi0LAGyao” \"https://api.external.citymapper.com/api/1/traveltimes?start=" + x + "&end=" + y + "\"");
+        return new Request.Builder()
+                .url("https://api.external.citymapper.com" +
+                        "/api/1/traveltimes?" +
+                        "start=" + x + "&end=" + y)
+                .addHeader("Citymapper-Partner-Key",
+                        System.getenv("CITYMAPPER_KEY"))
+                .build();
     }
 }
