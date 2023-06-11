@@ -18,14 +18,13 @@ public class TravelTimeEstimator {
 
         Request request = buildRequest(args);
 
-        try (Response r = new OkHttpClient().newCall(request).execute()) {
-            if (r.isSuccessful()) {
-                try (ResponseBody rb = r.body()) {
-                    s = JsonParser.parseString(rb.string())
-                            .getAsJsonObject()
-                            .get("transit_time_minutes").getAsString();
-                }
-            }
+        try {
+            ResponseBody responseBody = executeRequest(request);
+            s = JsonParser.parseString(responseBody.string())
+                    .getAsJsonObject()
+                    .get("transit_time_minutes").getAsString();
+        } catch (Exception e) {
+            throw e;
         }
         return Integer.parseInt(s);
     }
@@ -43,5 +42,19 @@ public class TravelTimeEstimator {
                 .addHeader("Citymapper-Partner-Key",
                         System.getenv("CITYMAPPER_KEY"))
                 .build();
+    }
+
+    public static ResponseBody executeRequest(Request request) throws Exception {
+        try {
+            Response r = new OkHttpClient().newCall(request).execute();
+            if (r.isSuccessful()) {
+                return r.body();
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Request was not successful");
+            throw new Exception("Error 101: Request was not successful.");
+        }
     }
 }
