@@ -51,12 +51,22 @@ public class TravelTimeEstimatorTests {
 
 
     @Test(timeout = 2000)
-    public void ShorterRouteIsTaken() {
+    public void ShorterRouteIsTakenWalk() {
         String mockString = "{\"walk_travel_time_minutes\":9,\"transit_time_minutes\":20}";
         try {
             Integer travelTime = TravelTimeEstimator.evaluateResponse(mockString);
-            System.out.println(travelTime);
             assertThat(travelTime, equalTo(9));
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Test(timeout = 2000)
+    public void ShorterRouteIsTakenTransit() {
+        String mockString = "{\"walk_travel_time_minutes\":15,\"transit_time_minutes\":10}";
+        try {
+            Integer travelTime = TravelTimeEstimator.evaluateResponse(mockString);
+            assertThat(travelTime, equalTo(10));
         } catch (Exception e) {
 
         }

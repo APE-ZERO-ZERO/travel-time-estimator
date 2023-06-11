@@ -61,10 +61,13 @@ public class TravelTimeEstimator {
 
     public static int evaluateResponse(String responseString) throws Exception {
         try {
-            return JsonParser.parseString(responseString)
+            int transitTime = JsonParser.parseString(responseString)
                     .getAsJsonObject()
                     .get("transit_time_minutes").getAsInt();
-
+            int walkingTime = JsonParser.parseString(responseString)
+                    .getAsJsonObject()
+                    .get("walk_travel_time_minutes").getAsInt();
+            return Math.min(walkingTime, transitTime);
         } catch (Exception e){
             throw new Exception("Error 101: Request did not yield a good response.");
         }
