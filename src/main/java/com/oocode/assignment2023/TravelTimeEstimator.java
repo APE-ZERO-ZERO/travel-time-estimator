@@ -55,7 +55,7 @@ public class TravelTimeEstimator {
             }
         } catch (Exception e) {
             System.out.println("Request was not successful");
-            throw new Exception("Error 101: Request was not successful.");
+            throw new Exception("Error 101: Request did not yield a good response.");
         }
     }
 
@@ -66,7 +66,7 @@ public class TravelTimeEstimator {
                     .get("transit_time_minutes").getAsInt();
 
         } catch (Exception e){
-            throw new Exception("Error 102: Response could not be evaluated.");
+            throw new Exception("Error 101: Request did not yield a good response.");
         }
     }
 }

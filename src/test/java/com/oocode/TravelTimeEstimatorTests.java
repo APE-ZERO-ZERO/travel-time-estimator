@@ -31,7 +31,20 @@ public class TravelTimeEstimatorTests {
         try {
             TravelTimeEstimator.travelTimeInMinutes(locations);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             assertThat(e.getMessage(), is("Error 100: Input must have 4 entries in total."));
+        }
+    }
+
+    @Test(timeout = 2000)
+    public void DistantLocationsThrowsException() {
+        // This test case uses an endpoint which is outside of London. Citymapper is unable to handle this
+        String[] locations = {"51.534327", "-0.012768", "51.503070", "-2.280302"};
+        try {
+            TravelTimeEstimator.travelTimeInMinutes(locations);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            assertThat(e.getMessage(), is("Error 101: Request did not yield a good response."));
         }
     }
 
