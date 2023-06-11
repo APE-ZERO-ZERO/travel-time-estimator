@@ -16,6 +16,10 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+tasks.withType(Test){
+    environment "CITYMAPPER_KEY", "dRywdoAozF2ptKzMxiHmG7PLi0LAGyao"
+}
+
 repositories {
     mavenCentral()
 }
@@ -44,3 +48,4 @@ pitest {
     targetClasses = ['com.oocode.*']
     outputFormats = ['HTML']
 }
+

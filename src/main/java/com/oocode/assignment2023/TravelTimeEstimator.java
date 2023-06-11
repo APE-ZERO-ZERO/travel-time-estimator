@@ -35,7 +35,7 @@ public class TravelTimeEstimator {
                 endLat = args[2], endLong = args[3];
         String x = startLat + "," + startLong, y = endLat + "," + endLong;
         System.out.println(x + "  "  + y);
-        //System.out.println("curl -H \"Citymapper-Partner-Key: dRywdoAozF2ptKzMxiHmG7PLi0LAGyao” \"https://api.external.citymapper.com/api/1/traveltimes?start=" + x + "&end=" + y + "\"");
+        //System.out.println(System.getenv("CITYMAPPER_KEY"));
         return new Request.Builder()
                 .url("https://api.external.citymapper.com" +
                         "/api/1/traveltimes?" +
