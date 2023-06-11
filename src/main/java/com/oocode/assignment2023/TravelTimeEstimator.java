@@ -16,6 +16,10 @@ public class TravelTimeEstimator {
     public static int travelTimeInMinutes(String[] args) throws Exception {
         Integer s = null;
 
+        if(args.length != 4) {
+            throw new Exception("Error 100: Input must have 4 entries in total.");
+        }
+
         Request request = buildRequest(args);
 
         try {
@@ -62,7 +66,7 @@ public class TravelTimeEstimator {
                     .get("transit_time_minutes").getAsInt();
 
         } catch (Exception e){
-            throw new Exception("Response could not be evaluated.");
+            throw new Exception("Error 102: Response could not be evaluated.");
         }
     }
 }

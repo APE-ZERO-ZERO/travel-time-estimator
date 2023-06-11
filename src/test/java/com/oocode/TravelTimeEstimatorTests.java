@@ -25,6 +25,16 @@ public class TravelTimeEstimatorTests {
         }
     }
 
+    @Test(timeout = 2000)
+    public void IncorrectInputThrowsDedicatedException() {
+        String[] locations = {"51.534327", "-0.012768", "51.504674"};
+        try {
+            TravelTimeEstimator.travelTimeInMinutes(locations);
+        } catch (Exception e) {
+            assertThat(e.getMessage(), is("Error 100: Input must have 4 entries in total."));
+        }
+    }
+
 
 
 }
