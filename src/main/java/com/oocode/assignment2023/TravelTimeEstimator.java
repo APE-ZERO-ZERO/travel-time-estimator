@@ -14,7 +14,7 @@ public class TravelTimeEstimator {
     // Name + signature of this method, "travelTimeInMinutes", must not change
     // i.e. no change to return type, modifier ("static"), exception, parameter
     public static int travelTimeInMinutes(String[] args) throws Exception {
-        String s = null;
+        Integer s = null;
 
         Request request = buildRequest(args);
 
@@ -22,11 +22,11 @@ public class TravelTimeEstimator {
             ResponseBody responseBody = executeRequest(request);
             s = JsonParser.parseString(responseBody.string())
                     .getAsJsonObject()
-                    .get("transit_time_minutes").getAsString();
+                    .get("transit_time_minutes").getAsInt();
         } catch (Exception e) {
             throw e;
         }
-        return Integer.parseInt(s);
+        return s;
     }
 
     public static Request buildRequest(String[] args) {
