@@ -4,6 +4,9 @@ import org.junit.*;
 import okhttp3.*;
 import com.oocode.assignment2023.TravelTimeEstimator;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.core.Is.*;
@@ -15,6 +18,26 @@ public class TravelTimeEstimatorTests {
         //Test to fail if it is 20:00:00 and the travel time is more than 4 hours
         //To get this test failing you need to simulate that the current time is 20:00:00.
         String mockString = "{\"walk_travel_time_minutes\":241,\"transit_time_minutes\":241}";
+        try {
+            TravelTimeEstimator.evaluateResponse(mockString);
+            assertThat(true, is(false));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            assertThat(String.valueOf(e.getClass()), is("class java.lang.RuntimeException"));
+            assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
+        }
+    }
+
+    @Test(timeout = 2000)
+    public void TravelAfterMidnightThrowsRuntimeExceptionImprovedVersion() {
+        int minutesUntilMidnight;
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("GMT+1"));
+        minutesUntilMidnight = 60 - zonedDateTime.getMinute();
+        minutesUntilMidnight = minutesUntilMidnight + 60 * (24 - zonedDateTime.getHour());
+        minutesUntilMidnight = minutesUntilMidnight + 10;
+        String mockString = "{\"walk_travel_time_minutes\":" + minutesUntilMidnight + ",\"transit_time_minutes\":" + minutesUntilMidnight + "}";
+        System.out.println("London local time is: " + zonedDateTime);
+        System.out.println("Minutes until midnight:" + (minutesUntilMidnight - 10));
         try {
             TravelTimeEstimator.evaluateResponse(mockString);
             assertThat(true, is(false));

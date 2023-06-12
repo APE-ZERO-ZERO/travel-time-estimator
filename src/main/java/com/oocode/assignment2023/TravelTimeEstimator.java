@@ -69,7 +69,6 @@ public class TravelTimeEstimator {
                 .get("walk_travel_time_minutes").getAsInt();
         int a = Math.min(walkingTime, transitTime);
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("GMT+1"));
-        //ZonedDateTime zonedDateTime = ZonedDateTime.of(2023, 5, 30, 20, 0, 0, 0, ZoneId.of("GMT"));
         if (checkTheTime(a, zonedDateTime)) {
             return a;
         } else {
@@ -80,7 +79,6 @@ public class TravelTimeEstimator {
     public static boolean checkTheTime(int minutes, ZonedDateTime zonedDateTime) {
         // returns true if the estimated end of the travel is before midnight of the current day
         // returns false otherwise
-        System.out.println(zonedDateTime.plusMinutes(minutes));
         return zonedDateTime.getDayOfMonth() == zonedDateTime.plusMinutes(minutes).getDayOfMonth();
     }
 }
