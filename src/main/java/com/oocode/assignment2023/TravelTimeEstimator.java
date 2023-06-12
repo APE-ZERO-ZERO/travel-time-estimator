@@ -16,7 +16,7 @@ public class TravelTimeEstimator {
     // Name + signature of this method, "travelTimeInMinutes", must not change
     // i.e. no change to return type, modifier ("static"), exception, parameter
     public static int travelTimeInMinutes(String[] args) throws Exception {
-        Integer travelTime = 0;
+        int travelTime = 0;
 
         try {
             isInputOK(args);
@@ -28,7 +28,7 @@ public class TravelTimeEstimator {
             Request request = buildRequest(args, travelLeg);
             try {
                 String responseString = executeRequest(request);
-                travelTime += evaluateResponse(responseString);
+                travelTime += evaluateResponse(responseString, travelTime);
             } catch (Exception e) {
                 throw e;
             }
@@ -71,14 +71,14 @@ public class TravelTimeEstimator {
         }
     }
 
-    public static int evaluateResponse(String responseString) throws RuntimeException {
+    public static int evaluateResponse(String responseString, int addTime) throws RuntimeException {
         int transitTime = JsonParser.parseString(responseString)
                 .getAsJsonObject()
                 .get("transit_time_minutes").getAsInt();
         int walkingTime = JsonParser.parseString(responseString)
                 .getAsJsonObject()
                 .get("walk_travel_time_minutes").getAsInt();
-        int a = Math.min(walkingTime, transitTime);
+        int a = addTime + Math.min(walkingTime, transitTime);
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("GMT"));
         zonedDateTime = ZonedDateTime.now(ZoneId.of(handleOffset(zonedDateTime)));
         if (checkTheTime(a, zonedDateTime)) {

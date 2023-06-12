@@ -73,7 +73,7 @@ public class TravelTimeEstimatorTests {
         System.out.println("London local time is: " + zonedDateTime);
         System.out.println("Minutes until midnight:" + (minutesUntilMidnight - 10));
         try {
-            TravelTimeEstimator.evaluateResponse(mockString);
+            TravelTimeEstimator.evaluateResponse(mockString, 0);
             assertThat(true, is(false));
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
@@ -87,7 +87,7 @@ public class TravelTimeEstimatorTests {
     public void TravelAfterMidnightThrowsRuntimeException() {
         String mockString = "{\"walk_travel_time_minutes\":1441,\"transit_time_minutes\":1441}";
         try {
-            TravelTimeEstimator.evaluateResponse(mockString);
+            TravelTimeEstimator.evaluateResponse(mockString, 0);
             assertThat(true, is(false));
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
@@ -143,7 +143,7 @@ public class TravelTimeEstimatorTests {
     public void ShorterRouteIsTakenWalk() {
         String mockString = "{\"walk_travel_time_minutes\":9,\"transit_time_minutes\":20}";
         try {
-            Integer travelTime = TravelTimeEstimator.evaluateResponse(mockString);
+            Integer travelTime = TravelTimeEstimator.evaluateResponse(mockString, 0);
             assertThat(travelTime, equalTo(9));
         } catch (Exception e) {
 
@@ -154,7 +154,7 @@ public class TravelTimeEstimatorTests {
     public void ShorterRouteIsTakenTransit() {
         String mockString = "{\"walk_travel_time_minutes\":15,\"transit_time_minutes\":10}";
         try {
-            Integer travelTime = TravelTimeEstimator.evaluateResponse(mockString);
+            Integer travelTime = TravelTimeEstimator.evaluateResponse(mockString, 0);
             assertThat(travelTime, equalTo(10));
         } catch (Exception e) {
 
