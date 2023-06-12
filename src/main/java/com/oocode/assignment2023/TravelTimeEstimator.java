@@ -68,7 +68,7 @@ public class TravelTimeEstimator {
                 .getAsJsonObject()
                 .get("walk_travel_time_minutes").getAsInt();
         int a = Math.min(walkingTime, transitTime);
-        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("GMT+1"));
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(handleOffset()));
         if (checkTheTime(a, zonedDateTime)) {
             return a;
         } else {
@@ -80,5 +80,23 @@ public class TravelTimeEstimator {
         // returns true if the estimated end of the travel is before midnight of the current day
         // returns false otherwise
         return zonedDateTime.getDayOfMonth() == zonedDateTime.plusMinutes(minutes).getDayOfMonth();
+    }
+
+    public static String handleOffset() {
+        /*
+          Is supposed to return the correct time zone with offset
+          does not handle it according to hours of the day yet (edge cases missing)
+          26.03, 29.10 - only dates for 2023 were used
+         */
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("GMT"));
+        if (zonedDateTime.getMonthValue() >= 4 && zonedDateTime.getMonthValue() <= 9) {
+            return "GMT+1";
+        } else if (zonedDateTime.getMonthValue() == 3 && zonedDateTime.getDayOfMonth() >= 26) {
+            return "GMT+1";
+        } else if (zonedDateTime.getMonthValue() == 10 && zonedDateTime.getDayOfMonth() <= 29) {
+            return "GMT+1";
+        } else {
+            return "GMT";
+        }
     }
 }
