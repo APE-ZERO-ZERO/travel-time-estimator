@@ -11,6 +11,18 @@ import static org.hamcrest.core.Is.*;
 public class TravelTimeEstimatorTests {
 
     @Test(timeout = 2000)
+    public void TravelAfterMidnightThrowsRuntimeException() {
+        String mockString = "{\"walk_travel_time_minutes\":1441,\"transit_time_minutes\":1441}";
+        try {
+            TravelTimeEstimator.evaluateResponse(mockString);
+            assertThat(true, is(false));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
+        }
+    }
+
+    @Test(timeout = 2000)
     public void CallingWorksForGivenCoordinates() {
         String[] locations = {"51.534327", "-0.012768", "51.504674", "-0.086005"};
         int travelTime;
