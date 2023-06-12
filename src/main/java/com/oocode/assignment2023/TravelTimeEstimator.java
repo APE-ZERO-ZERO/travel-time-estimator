@@ -60,7 +60,7 @@ public class TravelTimeEstimator {
         }
     }
 
-    public static int evaluateResponse(String responseString) {
+    public static int evaluateResponse(String responseString) throws RuntimeException {
         int transitTime = JsonParser.parseString(responseString)
                 .getAsJsonObject()
                 .get("transit_time_minutes").getAsInt();
@@ -78,8 +78,6 @@ public class TravelTimeEstimator {
     }
 
     public static boolean checkTheTime(int minutes, ZonedDateTime zonedDateTime) {
-        // returns true if the estimated end of the travel is before midnight of the current day
-        // returns false otherwise
         return zonedDateTime.getDayOfMonth() == zonedDateTime.plusMinutes(minutes).getDayOfMonth();
     }
 
