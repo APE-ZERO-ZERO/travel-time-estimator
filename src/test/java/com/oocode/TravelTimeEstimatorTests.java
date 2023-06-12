@@ -14,6 +14,20 @@ import static org.hamcrest.core.Is.*;
 public class TravelTimeEstimatorTests {
 
     @Test(timeout = 2000)
+    public void TimeZoneHandling() {
+        ZonedDateTime march26 = ZonedDateTime.of(2023, 3, 26, 20, 0, 0, 0, ZoneId.of("GMT"));
+        ZonedDateTime oct29 = ZonedDateTime.of(2023, 10, 29, 20, 0, 0, 0, ZoneId.of("GMT"));
+        ZonedDateTime oct30 = ZonedDateTime.of(2023, 10, 30, 20, 0, 0, 0, ZoneId.of("GMT"));
+        ZonedDateTime april20 = ZonedDateTime.of(2023, 4, 20, 20, 0, 0, 0, ZoneId.of("GMT"));
+        ZonedDateTime dec24 = ZonedDateTime.of(2023, 12, 24, 20, 0, 0, 0, ZoneId.of("GMT"));
+
+        assertThat(TravelTimeEstimator.handleOffset(march26), is("GMT+1"));
+        assertThat(TravelTimeEstimator.handleOffset(oct29), is("GMT+1"));
+        assertThat(TravelTimeEstimator.handleOffset(oct30), is("GMT"));
+        assertThat(TravelTimeEstimator.handleOffset(april20), is("GMT+1"));
+        assertThat(TravelTimeEstimator.handleOffset(dec24), is("GMT"));
+    }
+    @Test(timeout = 2000)
     public void TravelAfterMidnightCheckTheTime() {
         //Test to fail if it is 20:00:00 and the travel time is more than 4 hours
         //To get this test failing you need to simulate that the current time is 20:00:00.
