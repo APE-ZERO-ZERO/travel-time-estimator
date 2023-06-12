@@ -16,7 +16,7 @@ public class TravelTimeEstimator {
     // Name + signature of this method, "travelTimeInMinutes", must not change
     // i.e. no change to return type, modifier ("static"), exception, parameter
     public static int travelTimeInMinutes(String[] args) throws Exception {
-        Integer s = null;
+        Integer travelTime = 0;
 
         try {
             isInputOK(args);
@@ -24,14 +24,16 @@ public class TravelTimeEstimator {
             throw new Exception(e.getMessage());
         }
 
-        Request request = buildRequest(args);
-
-        try {
-            String responseString = executeRequest(request);
-            return evaluateResponse(responseString);
-        } catch (Exception e) {
-            throw e;
+        for (int travelLeg = 0; travelLeg < args.length * 0.5 - 1; travelLeg++) {
+            Request request = buildRequest(args, travelLeg);
+            try {
+                String responseString = executeRequest(request);
+                travelTime += evaluateResponse(responseString);
+            } catch (Exception e) {
+                throw e;
+            }
         }
+        return travelTime;
     }
 
     public static void isInputOK(String[] args) throws Exception {
@@ -40,9 +42,10 @@ public class TravelTimeEstimator {
         }
     }
 
-    public static Request buildRequest(String[] args) {
-        String startLat = args[0], startLong = args[1],
-                endLat = args[2], endLong = args[3];
+    public static Request buildRequest(String[] args, int travelLeg) {
+        int offset = travelLeg*2;
+        String startLat = args[0 + offset], startLong = args[1 + offset],
+                endLat = args[2 + offset], endLong = args[3 + offset];
         String x = startLat + "," + startLong, y = endLat + "," + endLong;
         System.out.println(x + "  "  + y);
         return new Request.Builder()

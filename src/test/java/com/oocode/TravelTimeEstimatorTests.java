@@ -26,15 +26,14 @@ public class TravelTimeEstimatorTests {
             travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
             firstLeg = TravelTimeEstimator.travelTimeInMinutes(first);
             secondLeg = TravelTimeEstimator.travelTimeInMinutes(second);
-            /*System.out.println(travelTime);
+            System.out.println("TravelTime: " + travelTime + "  firstLeg: " + firstLeg + "  secondLeg: " +secondLeg);
             if (abs(travelTime - firstLeg - secondLeg) <= 5) {
                 check = true;
             }
             assertThat(check, is(true));
-             */
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            assertThat(e.getMessage(), is("Error 101: Request did not yield a good response."));
+            assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
         }
     }
 
