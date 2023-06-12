@@ -11,6 +11,21 @@ import static org.hamcrest.core.Is.*;
 public class TravelTimeEstimatorTests {
 
     @Test(timeout = 2000)
+    public void TravelAfterMidnightThrowsRuntimeException4HoursLeft() {
+        //Test to fail if it is 20:00:00 and the travel time is more than 4 hours
+        //To get this test failing you need to simulate that the current time is 20:00:00.
+        String mockString = "{\"walk_travel_time_minutes\":241,\"transit_time_minutes\":241}";
+        try {
+            TravelTimeEstimator.evaluateResponse(mockString);
+            assertThat(true, is(false));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
+        }
+    }
+
+
+    @Test(timeout = 2000)
     public void TravelAfterMidnightThrowsRuntimeException() {
         String mockString = "{\"walk_travel_time_minutes\":1441,\"transit_time_minutes\":1441}";
         try {
