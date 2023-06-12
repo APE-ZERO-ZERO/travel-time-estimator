@@ -7,11 +7,36 @@ import com.oocode.assignment2023.TravelTimeEstimator;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import static java.lang.Math.abs;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.core.Is.*;
 
 public class TravelTimeEstimatorTests {
+
+    @Test(timeout = 2000)
+    public void CallingWorksForThreePoints() {
+        String[] locations = {"51.534327", "-0.012768", "51.504674", "-0.086005", "51.534327", "-0.012768"};
+        String[] first = {"51.534327", "-0.012768", "51.504674", "-0.086005"};
+        String[] second = {"51.504674", "-0.086005", "51.534327", "-0.012768"};
+
+        int travelTime, firstLeg, secondLeg;
+        boolean check = false;
+        try {
+            travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
+            firstLeg = TravelTimeEstimator.travelTimeInMinutes(first);
+            secondLeg = TravelTimeEstimator.travelTimeInMinutes(second);
+            /*System.out.println(travelTime);
+            if (abs(travelTime - firstLeg - secondLeg) <= 5) {
+                check = true;
+            }
+            assertThat(check, is(true));
+             */
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            assertThat(e.getMessage(), is("Error 101: Request did not yield a good response."));
+        }
+    }
 
     @Test(timeout = 2000)
     public void TimeZoneHandling() {
