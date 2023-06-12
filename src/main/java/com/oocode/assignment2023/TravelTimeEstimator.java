@@ -4,6 +4,8 @@ import com.google.gson.JsonParser;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 // 51.534327 -0.012768 51.503070 -0.280302
 public class TravelTimeEstimator {
@@ -66,10 +68,19 @@ public class TravelTimeEstimator {
                 .getAsJsonObject()
                 .get("walk_travel_time_minutes").getAsInt();
         int a = Math.min(walkingTime, transitTime);
-        if (a < 1440) {
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("GMT+1"));
+        //ZonedDateTime zonedDateTime = ZonedDateTime.of(2023, 5, 30, 20, 0, 0, 0, ZoneId.of("GMT"));
+        if (checkTheTime(a, zonedDateTime)) {
             return a;
         } else {
             throw new RuntimeException("Error 200: Be careful! Journey will end after midnight.");
         }
+    }
+
+    public static boolean checkTheTime(int minutes, ZonedDateTime zonedDateTime) {
+        // returns true if the estimated end of the travel is before midnight of the current day
+        // returns false otherwise
+        System.out.println(zonedDateTime.plusMinutes(minutes));
+        return zonedDateTime.getDayOfMonth() == zonedDateTime.plusMinutes(minutes).getDayOfMonth();
     }
 }

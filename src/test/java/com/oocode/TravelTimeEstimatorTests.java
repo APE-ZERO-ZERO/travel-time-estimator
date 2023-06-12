@@ -20,6 +20,7 @@ public class TravelTimeEstimatorTests {
             assertThat(true, is(false));
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
+            assertThat(String.valueOf(e.getClass()), is("class java.lang.RuntimeException"));
             assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
         }
     }
