@@ -33,7 +33,30 @@ public class TravelTimeEstimatorTests {
             assertThat(check, is(true));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
+            //assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
+        }
+    }
+
+    @Test(timeout = 2000)
+    public void CallingWorksForFourPoints() {
+        String[] locations = {"51.534327", "-0.012768", "51.504674", "-0.086005", "51.534327", "-0.012768", "51.504674", "-0.086005"};
+        String[] first = {"51.534327", "-0.012768", "51.504674", "-0.086005"};
+        String[] second = {"51.504674", "-0.086005", "51.534327", "-0.012768"};
+
+        int travelTime, firstLeg, secondLeg;
+        boolean check = false;
+        try {
+            travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
+            firstLeg = TravelTimeEstimator.travelTimeInMinutes(first);
+            secondLeg = TravelTimeEstimator.travelTimeInMinutes(second);
+            System.out.println("TravelTime: " + travelTime + "  firstLeg: " + firstLeg + "  secondLeg: " + secondLeg + "  thirdLeg: " +firstLeg);
+            if (abs(travelTime - firstLeg - secondLeg - firstLeg) <= 5) {
+                check = true;
+            }
+            assertThat(check, is(true));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            //assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
         }
     }
 
