@@ -35,7 +35,6 @@ public class TravelTimeEstimator {
                 endLat = args[2], endLong = args[3];
         String x = startLat + "," + startLong, y = endLat + "," + endLong;
         System.out.println(x + "  "  + y);
-        //System.out.println(System.getenv("CITYMAPPER_KEY"));
         return new Request.Builder()
                 .url("https://api.external.citymapper.com" +
                         "/api/1/traveltimes?" +
@@ -51,7 +50,7 @@ public class TravelTimeEstimator {
             if (r.isSuccessful()) {
                 return r.body().string();
             } else {
-                return null;
+                throw new Exception("Error 101: Request did not yield a good response.");
             }
         } catch (Exception e) {
             System.out.println("Request was not successful");
@@ -59,17 +58,13 @@ public class TravelTimeEstimator {
         }
     }
 
-    public static int evaluateResponse(String responseString) throws Exception {
-        try {
-            int transitTime = JsonParser.parseString(responseString)
-                    .getAsJsonObject()
-                    .get("transit_time_minutes").getAsInt();
-            int walkingTime = JsonParser.parseString(responseString)
-                    .getAsJsonObject()
-                    .get("walk_travel_time_minutes").getAsInt();
-            return Math.min(walkingTime, transitTime);
-        } catch (Exception e){
-            throw new Exception("Error 101: Request did not yield a good response.");
-        }
+    public static int evaluateResponse(String responseString) {
+        int transitTime = JsonParser.parseString(responseString)
+                .getAsJsonObject()
+                .get("transit_time_minutes").getAsInt();
+        int walkingTime = JsonParser.parseString(responseString)
+                .getAsJsonObject()
+                .get("walk_travel_time_minutes").getAsInt();
+        return Math.min(walkingTime, transitTime);
     }
 }
