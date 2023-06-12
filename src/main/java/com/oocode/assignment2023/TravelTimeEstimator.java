@@ -65,6 +65,11 @@ public class TravelTimeEstimator {
         int walkingTime = JsonParser.parseString(responseString)
                 .getAsJsonObject()
                 .get("walk_travel_time_minutes").getAsInt();
-        return Math.min(walkingTime, transitTime);
+        int a = Math.min(walkingTime, transitTime);
+        if (a < 1440) {
+            return a;
+        } else {
+            throw new RuntimeException("Error 200: Be careful! Journey will end after midnight.");
+        }
     }
 }
