@@ -40,12 +40,14 @@ public class TravelTimeEstimatorTests {
     @Test(timeout = 2000)
     public void TimeZoneHandling() {
         ZonedDateTime march26 = ZonedDateTime.of(2023, 3, 26, 20, 0, 0, 0, ZoneId.of("GMT"));
+        ZonedDateTime march24 = ZonedDateTime.of(2023, 3, 24, 20, 0, 0, 0, ZoneId.of("GMT"));
         ZonedDateTime oct29 = ZonedDateTime.of(2023, 10, 29, 20, 0, 0, 0, ZoneId.of("GMT"));
         ZonedDateTime oct30 = ZonedDateTime.of(2023, 10, 30, 20, 0, 0, 0, ZoneId.of("GMT"));
         ZonedDateTime april20 = ZonedDateTime.of(2023, 4, 20, 20, 0, 0, 0, ZoneId.of("GMT"));
         ZonedDateTime dec24 = ZonedDateTime.of(2023, 12, 24, 20, 0, 0, 0, ZoneId.of("GMT"));
 
         assertThat(TravelTimeEstimator.handleOffset(march26), is("GMT+1"));
+        assertThat(TravelTimeEstimator.handleOffset(march24), is("GMT"));
         assertThat(TravelTimeEstimator.handleOffset(oct29), is("GMT+1"));
         assertThat(TravelTimeEstimator.handleOffset(oct30), is("GMT"));
         assertThat(TravelTimeEstimator.handleOffset(april20), is("GMT+1"));
@@ -117,6 +119,28 @@ public class TravelTimeEstimatorTests {
     @Test(timeout = 2000)
     public void IncorrectInputThrowsDedicatedException() {
         String[] locations = {"51.534327", "-0.012768", "51.504674"};
+        try {
+            TravelTimeEstimator.travelTimeInMinutes(locations);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            assertThat(e.getMessage(), is("Error 100: Input represents at least two locations and must have an even number of entries."));
+        }
+    }
+
+    @Test(timeout = 2000)
+    public void IncorrectInputThrowsDedicatedException2() {
+        String[] locations = {"51.534327", "-0.012768", "51.504674", "-0.012768", "51.504674"};
+        try {
+            TravelTimeEstimator.travelTimeInMinutes(locations);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            assertThat(e.getMessage(), is("Error 100: Input represents at least two locations and must have an even number of entries."));
+        }
+    }
+
+    @Test(timeout = 2000)
+    public void IncorrectInputThrowsDedicatedException3() {
+        String[] locations = {"51.534327", "-0.012768"};
         try {
             TravelTimeEstimator.travelTimeInMinutes(locations);
         } catch (Exception e) {
