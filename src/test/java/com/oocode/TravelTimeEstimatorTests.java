@@ -122,7 +122,7 @@ public class TravelTimeEstimatorTests {
             TravelTimeEstimator.travelTimeInMinutes(locations);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            assertThat(e.getMessage(), is("Error 100: Input must have 4 entries in total."));
+            assertThat(e.getMessage(), is("Error 100: Input represents at least two locations and must have an even number of entries."));
         }
     }
 

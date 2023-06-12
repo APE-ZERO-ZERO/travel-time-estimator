@@ -18,8 +18,10 @@ public class TravelTimeEstimator {
     public static int travelTimeInMinutes(String[] args) throws Exception {
         Integer s = null;
 
-        if(args.length != 4) {
-            throw new Exception("Error 100: Input must have 4 entries in total.");
+        try {
+            isInputOK(args);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
 
         Request request = buildRequest(args);
@@ -29,6 +31,12 @@ public class TravelTimeEstimator {
             return evaluateResponse(responseString);
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    public static void isInputOK(String[] args) throws Exception {
+        if (args.length % 2 != 0 || args.length < 4) {
+            throw new Exception("Error 100: Input represents at least two locations and must have an even number of entries.");
         }
     }
 
