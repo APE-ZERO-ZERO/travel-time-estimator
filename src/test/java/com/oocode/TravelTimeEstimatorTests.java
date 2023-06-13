@@ -26,14 +26,14 @@ public class TravelTimeEstimatorTests {
             travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
             firstLeg = TravelTimeEstimator.travelTimeInMinutes(first);
             secondLeg = TravelTimeEstimator.travelTimeInMinutes(second);
-            System.out.println("TravelTime: " + travelTime + "  firstLeg: " + firstLeg + "  secondLeg: " +secondLeg);
+            //System.out.println("TravelTime: " + travelTime + "  firstLeg: " + firstLeg + "  secondLeg: " +secondLeg);
             if (abs(travelTime - firstLeg - secondLeg) <= 5) {
                 check = true;
             }
             assertThat(check, is(true));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            //assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
+            //System.out.println(e.getMessage());
+            assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
         }
     }
 
@@ -49,14 +49,12 @@ public class TravelTimeEstimatorTests {
             travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
             firstLeg = TravelTimeEstimator.travelTimeInMinutes(first);
             secondLeg = TravelTimeEstimator.travelTimeInMinutes(second);
-            System.out.println("TravelTime: " + travelTime + "  firstLeg: " + firstLeg + "  secondLeg: " + secondLeg + "  thirdLeg: " +firstLeg);
             if (abs(travelTime - firstLeg - secondLeg - firstLeg) <= 5) {
                 check = true;
             }
             assertThat(check, is(true));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            //assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
+            assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
         }
     }
 
@@ -95,13 +93,10 @@ public class TravelTimeEstimatorTests {
         minutesUntilMidnight = minutesUntilMidnight + 60 * (24 - zonedDateTime.getHour());
         minutesUntilMidnight = minutesUntilMidnight + 10;
         String mockString = "{\"walk_travel_time_minutes\":" + minutesUntilMidnight + ",\"transit_time_minutes\":" + minutesUntilMidnight + "}";
-        System.out.println("London local time is: " + zonedDateTime);
-        System.out.println("Minutes until midnight:" + (minutesUntilMidnight - 10));
         try {
             TravelTimeEstimator.evaluateResponse(mockString, 0);
             assertThat(true, is(false));
         } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
             assertThat(String.valueOf(e.getClass()), is("class java.lang.RuntimeException"));
             assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
         }
@@ -115,7 +110,6 @@ public class TravelTimeEstimatorTests {
             TravelTimeEstimator.evaluateResponse(mockString, 0);
             assertThat(true, is(false));
         } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
             assertThat(e.getMessage(), is("Error 200: Be careful! Journey will end after midnight."));
         }
     }
@@ -127,14 +121,12 @@ public class TravelTimeEstimatorTests {
         boolean check = false;
         try {
             travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
-            System.out.println(travelTime);
             if (travelTime >= 25 && travelTime <= 60) {
                 check = true;
             }
             assertThat(check, is(true));
         } catch (Exception e) {
             // This test case was altered to handle the non-responsiveness of the citymapper-api
-            System.out.println(e.getMessage());
             assertThat(true, is(true));
         }
     }
@@ -145,7 +137,6 @@ public class TravelTimeEstimatorTests {
         try {
             TravelTimeEstimator.travelTimeInMinutes(locations);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             assertThat(e.getMessage(), is("Error 100: Input represents at least two locations and must have an even number of entries."));
         }
     }
@@ -156,7 +147,6 @@ public class TravelTimeEstimatorTests {
         try {
             TravelTimeEstimator.travelTimeInMinutes(locations);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             assertThat(e.getMessage(), is("Error 100: Input represents at least two locations and must have an even number of entries."));
         }
     }
@@ -167,7 +157,6 @@ public class TravelTimeEstimatorTests {
         try {
             TravelTimeEstimator.travelTimeInMinutes(locations);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             assertThat(e.getMessage(), is("Error 100: Input represents at least two locations and must have an even number of entries."));
         }
     }
@@ -180,7 +169,6 @@ public class TravelTimeEstimatorTests {
         try {
             TravelTimeEstimator.travelTimeInMinutes(locations);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             assertThat(e.getMessage(), is("Error 101: Request did not yield a good response."));
         }
     }

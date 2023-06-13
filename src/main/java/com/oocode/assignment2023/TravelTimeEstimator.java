@@ -47,7 +47,6 @@ public class TravelTimeEstimator {
         String startLat = args[0 + offset], startLong = args[1 + offset],
                 endLat = args[2 + offset], endLong = args[3 + offset];
         String x = startLat + "," + startLong, y = endLat + "," + endLong;
-        System.out.println(x + "  "  + y);
         return new Request.Builder()
                 .url("https://api.external.citymapper.com" +
                         "/api/1/traveltimes?" +
@@ -66,7 +65,6 @@ public class TravelTimeEstimator {
                 throw new Exception("Error 101: Request did not yield a good response.");
             }
         } catch (Exception e) {
-            System.out.println("Request was not successful");
             throw new Exception("Error 101: Request did not yield a good response.");
         }
     }
