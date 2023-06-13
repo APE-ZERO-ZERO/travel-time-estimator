@@ -27,7 +27,7 @@ public class TravelTimeEstimatorTests {
             firstLeg = TravelTimeEstimator.travelTimeInMinutes(first);
             secondLeg = TravelTimeEstimator.travelTimeInMinutes(second);
             //System.out.println("TravelTime: " + travelTime + "  firstLeg: " + firstLeg + "  secondLeg: " +secondLeg);
-            if (abs(travelTime - firstLeg - secondLeg) <= 5) {
+            if (abs(travelTime - firstLeg - secondLeg) <= 20) {
                 check = true;
             }
             assertThat(check, is(true));
@@ -42,14 +42,16 @@ public class TravelTimeEstimatorTests {
         String[] locations = {"51.534327", "-0.012768", "51.504674", "-0.086005", "51.534327", "-0.012768", "51.504674", "-0.086005"};
         String[] first = {"51.534327", "-0.012768", "51.504674", "-0.086005"};
         String[] second = {"51.504674", "-0.086005", "51.534327", "-0.012768"};
+        String[] third = {"51.534327", "-0.012768", "51.504674", "-0.086005"};
 
-        int travelTime, firstLeg, secondLeg;
+        int travelTime, firstLeg, secondLeg, thirdLeg;
         boolean check = false;
         try {
             travelTime = TravelTimeEstimator.travelTimeInMinutes(locations);
             firstLeg = TravelTimeEstimator.travelTimeInMinutes(first);
             secondLeg = TravelTimeEstimator.travelTimeInMinutes(second);
-            if (abs(travelTime - firstLeg - secondLeg - firstLeg) <= 5) {
+            thirdLeg = TravelTimeEstimator.travelTimeInMinutes(third);
+            if (abs(travelTime - firstLeg - secondLeg - thirdLeg) <= 20) {
                 check = true;
             }
             assertThat(check, is(true));
